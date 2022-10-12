@@ -19,7 +19,9 @@ def static_file(path):
     try:
         if img_id in requests.get('http://localhost:5000/api/ddr_imglist').json()["data"]:
             if cache_file.exists(): return send_file(cache_file)
-            img = requests.get('http://localhost:5000/api/ddr_img?id=' + img_id).content
+            req = requests.get('http://localhost:5000/api/ddr_img?id=' + img_id)
+            if req.status_code != 200: return {"status": req.status_code, "message": "Server-side reqeust error"}, req.status_code
+            img = req.content
             cache_file.write_bytes(img)
             return send_file(cache_file)
         else:

@@ -10,7 +10,8 @@ CORS(app)
 
 @app.route('/<path:path>')
 def static_file(path):
-    if len(path) < 64: return {"status": "Not Found"}, 404
+    if (len(path) < 64) and (path != 'ekonomi.png'):
+        return {"status": "Not Found"}, 404
     os.chdir(Path(__file__).parent)
     img_id = path.split('.')[0]
     cache_folder = Path('cache')

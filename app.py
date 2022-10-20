@@ -10,7 +10,7 @@ CORS(app)
 
 @app.route('/<path:path>')
 def static_file(path):
-    if path == "favicon.ico": return {"status": 404}, 404
+    if len(path) < 64: return {"status": "Not Found"}, 404
     os.chdir(Path(__file__).parent)
     img_id = path.split('.')[0]
     cache_folder = Path('cache')

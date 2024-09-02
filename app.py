@@ -1,3 +1,5 @@
+from .settings import *
+
 from flask import *
 from flask_cors import CORS
 from pathlib import Path
@@ -18,9 +20,9 @@ def static_file(path):
     if not cache_folder.exists(): cache_folder.mkdir()
     cache_file = cache_folder / f'{img_id}.png'
     try:
-        if img_id in requests.get('http://localhost:5000/api/ddr_imglist').json()["data"]:
+        if img_id in requests.get(f'{API_URL}/api/ddr_imglist').json()["data"]:
             if cache_file.exists(): return send_file(cache_file)
-            req = requests.get('http://localhost:5000/api/ddr_img?id=' + img_id)
+            req = requests.get(f'{API_URL}/api/ddr_img?id=' + img_id)
             if req.status_code != 200: return {"status": req.status_code, "message": "Server-side reqeust Error"}, req.status_code
             img = req.content
             cache_file.write_bytes(img)
@@ -32,4 +34,4 @@ def static_file(path):
         return {"status": 500, "message": "Internal Server Error"}
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host=HOST, port=PORT, debug=DEBUG)

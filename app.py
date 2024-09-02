@@ -30,8 +30,8 @@ def static_file(path):
         else:
             if cache_file.exists(): cache_file.unlink()
             return {"status": 404, "message": "Image not found"}
-    except:
-        return {"status": 500, "message": "Internal Server Error"}
+    except Exception as e:
+        return {"status": 500, "message": "Internal Server Error", "error": e}, 500
 
 if __name__ == '__main__':
     app.run(host=HOST, port=PORT, debug=DEBUG)

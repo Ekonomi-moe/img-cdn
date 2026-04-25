@@ -1,0 +1,12 @@
+services:
+  img-cdn:
+    build: .
+    image: img-cdn:latest
+    container_name: img-cdn
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-5000}:5000"
+    volumes:
+      - ./cache:/app/cache
